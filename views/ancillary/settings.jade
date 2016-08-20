@@ -1,0 +1,126 @@
+﻿extends ../layout-ancillary
+
+block title 
+	h1 Configuración de cuenta
+
+block content
+	.panel
+		.panel-body
+			.row
+				.span6.ui-form.clearfix
+					h2 Informaci&oacute;n personal
+
+					.margin-vr
+						#settings-personal-name-container
+							.spinner.gray-font cargando nombre...
+							
+						script#settings-personal-item-template(type='text/x-handlebars-template')
+							.clearfix
+								.gray-font.ui-caption Nombre
+								.ui-title.left {{first}} {{last}} &nbsp;
+									span.ui-edit.ui-tooltip(data-tooltip="Editar nombre"): i.fa.fa-pencil
+									
+						script#settings-personal-form-template(type='text/x-handlebars-template')
+							.ui-form.clearfix
+								.form-group
+									.span8
+										.span6
+											label.gray-font.ui-caption Editar nombre
+											input(type='text',placeholder='Nombre', required='true', requiredError="Debes indicar tu nombre", name='first',tabindex='1').form-control
+										.span6
+											label
+											input(type='text',placeholder='Apellido', required='true', requiredError="Debes indicar tu apellido", name='last',tabindex='2').form-control
+									.span4
+										label
+										div.left: button.btn.btn-icon.bg-primary.ui-submit: span.ui-tooltip(data-tooltip="Guardar nombre"): i.fa.fa-save
+										div.left: button.btn.btn-icon.btn-transparent.ui-cancel: span.ui-tooltip(data-tooltip="Cancelar"): i.fa.fa-close
+										
+						#settings-email-container.margin-vr
+							.spinner.gray-font cargando email...
+							
+						script#settings-email-item-template(type='text/x-handlebars-template')
+							.clearfix
+								.gray-font.ui-caption Email de contacto
+								.ui-title.left(name='email') 
+									{{#unless email}}
+									No has definido a&uacute;n tu email!
+									{{/unless}}
+									{{email}} &nbsp;
+									span.ui-edit.ui-tooltip(data-tooltip="Editar mail de contacto"): i.fa.fa-pencil
+						
+						script#settings-email-form-template(type='text/x-handlebars-template')
+							.ui-form.clearfix
+								.form-group
+									.span8
+										label Email
+										input(type='text', placeholder='alguien@ejemplo.com', required='true', requiredError='Debes indicar tu email', name='email', tabindex='3').form-control
+									.span4
+										label
+										div.left: button.btn.btn-icon.bg-primary.ui-submit: span.ui-tooltip(data-tooltip="Guardar email"): i.fa.fa-save
+										div.left: button.btn.btn-icon.btn-transparent.ui-cancel: span.ui-tooltip(data-tooltip="Cancelar"): i.fa.fa-close
+				.span6
+					h2 Seguridad
+					ul.list-unstyled
+						li.clearfix.margin-vr
+							a.color-font.ui-action-link(href='/auth/facebook/request')
+								span.block.left.ui-icon.ui-facebook.margin-hr
+								span.block.left Conectar con Facebook
+						
+						li.clearfix.margin-vr#settings-password-container
+							a.color-font.ui-action-link
+								span.block.left.ui-icon.ui-secure.margin-hr
+								span.block.left Cambiar contrase&#xf1;a
+
+						script#settings-password-form-template(type='text/x-handlebars-template')
+							.carded.bg-default.ui-form.container-xs(style='position: absolute; z-index: 99999999;'): .padded-all-lg
+								.form-group.old-pass
+									label.gray-font.ui-caption Contraseña actual
+									input(type='password', placeholder='La contrseña de siempre...', required='true', requiredError='Debes indicar tu contraseña anterior', name='old', tabindex='3').form-control
+								.form-group
+									label.gray-font.ui-caption Contraseña nueva
+									input(type='password', placeholder='Incluye letras y números, es más seguro...', required='true', requiredError='Debes indicar una nueva contraseña', name='password', tabindex='3').form-control
+								.form-group
+									label.gray-font.ui-caption Contraseña nueva otra vez
+									input(type='password', placeholder='La misma que en el campo anterior...', required='true', requiredError='Debes repetir la contraseña', name='again', tabindex='3').form-control
+								div.clear-fix.first-inpage
+									button.ui-action-button.btn.bg-primary.margin-hr Cambiar contraseña
+									a.ui-cancel-button.btn Cancelar
+										
+						li.clearfix.margin-vr
+							a.color-font.ui-action-link(href='/forgot')
+								span.block.left.ui-icon.ui-unsecure.margin-hr
+								span.block.left Olvidé mi contraseña
+
+			.row
+				hr
+				.span6
+					h2 Plan
+					ul.list-unstyled
+						li.clearfix.margin-vr
+							.ui-title Plan de pruebas por 30 días
+							.ui-text Vencimiento 30/12/2014
+						li.clearfix.margin-vr
+							a.ui-action-link.text-info(href="https://www.mercadopago.com/mla/debits/new?preapproval_plan_id=a68ea956773d419383de6586f7b3338f", name="MP-payButton")
+								span.text-warning: i.fa.fa-star
+								| Actualizar mi plan
+
+			.clearfix
+				.right
+					a#settings-delete-account-btn.ui-action-link.gray-font.ui-caption Eliminar mi cuenta
+
+			.hidden#settings-account-delete-dialog(data-title="Eliminar cuenta de Roto?")
+				p.ui-title Est&aacute;s a punto de eliminar tu cuenta de Roto.
+				p Ten en cuenta que si eliminas tu cuenta no podr&aacute;s acceder a tus datos.
+				p Esta operaci&oacute;n no puede deshacerse!
+
+				.panel-buttons.right
+					button.ui-action-button.btn.bg-danger.left.margin-hr Eliminar cuenta
+					a.ui-cancel-button.btn.left Cancelar
+				.clear
+
+
+block scripts
+	script.
+		$(function() {Roto.Loader.load('doclet.settings.main');});
+
+		(function(){function $MPBR_load(){window.$MPBR_loaded !== true && (function(){var s = document.createElement("script");s.type = "text/javascript";s.async = true;s.src = ("https:"==document.location.protocol?"https://www.mercadopago.com/org-img/jsapi/mptools/buttons/":"http://mp-tools.mlstatic.com/buttons/")+"render.js";var x = document.getElementsByTagName('script')[0];x.parentNode.insertBefore(s, x);window.$MPBR_loaded = true;})();}window.$MPBR_loaded !== true ? (window.attachEvent ?window.attachEvent('onload', $MPBR_load) : window.addEventListener('load', $MPBR_load, false)) : null;})();

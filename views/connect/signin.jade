@@ -1,0 +1,109 @@
+﻿extends ../landing/layout-landing
+
+block content
+	header(style="position: absolute; top: 0; width: 100%;height: 50px;line-height: 50px;")
+		.container.center-block
+			.pull-right.nav
+				a.text-white(href='/') Regístrate
+
+	section.page-auth.page-login.text-center
+		.inner-page
+			.logo
+				a.logo-link(href='/')
+					img(src='//www.roto-click.com/img/booh.png')
+			.login-box.center-block 
+				form#login.form-horizontal(data-action='login')
+					p.title Ingresa con tu email y contraseña
+					
+					label.control-label.sr-only Email
+					.form-group
+						.col-sm-12
+							.input-group
+								input(type="text", name="email", required=true, data-error="El mail es un campo obligatorio", placeholder="Correo electrónico").form-control
+								span.input-group-addon: i.fa.fa-user
+
+					label.control-label.sr-only Contraseña
+					.form-group
+						.col-sm-12
+							.input-group
+								input(type="password", name="password", required=true, placeholder="Contraseña").form-control
+								span.input-group-addon: i.fa.fa-lock
+
+					.form-group.bg-danger.error.hidden(requiredError='Debes completar todos los datos', invalidError='La combinación de correo electrónico y contraseña es incorrecta')
+
+					button(data-action="submit").btn.btn-custom-primary.btn-lg.btn-block.btn-auth Ingresar
+					
+				.links
+					p: a#forgot(href='/forgot') ¿Olvidaste tu contraseña?
+
+block scripts
+	script.
+		(function($){
+
+			var LoginFormView = Backbone.View.extend({
+				el: $('#login'),
+
+				events: {
+					'click [data-action=submit]': 'onValidate'
+				},
+
+				//Init method
+				initialize: function() {
+				
+				},
+
+
+				//Do some render...
+				render: function(){
+					var self = this;
+					self.$el.fadeIn();
+					self.$el.on('keypress', function(){
+						self.error.hide();
+					});
+
+					self.$el.validator({
+						errors: {
+							empty: 'El campo es obligatorio',
+							match: 'Does not match',
+							minlength: 'Not long enough'
+						}
+					});
+
+					self.$el.on('submit', _.bind(self.onSubmit, self));
+
+					self.error = self.$el.find('.error');
+				},
+
+				//To validate the form
+				onValidate: function(){
+					console.log(this.$el.validator('validate'));
+				},
+
+				//do the info submit
+				onSubmit: function(e){
+					//Is valid?
+					if (e.isDefaultPrevented()) return;
+					e.preventDefault();
+
+					var self = this;
+					var form = self.$el;
+					var user = _.reduce(form.serialize().split('&'), function(memo, field){
+						var values = field.split('=');
+						memo[values[0]] = unescape(values[1]);
+						return memo;
+					}, {});
+
+					console.log(user);
+					$.post("/login",user)
+						.done(function( item ) {
+							if(item.code == 200){
+								window.location.href = '/dashboard';
+							}else{
+								form.find('[name=email]').next('.with-errors').text('El mail ingresado ya está registrado');
+							}
+						});
+				}
+			});
+
+			new LoginFormView().render();
+		})(jQuery);

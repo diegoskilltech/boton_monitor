@@ -1,0 +1,17 @@
+{
+  "appenders": [
+    {
+      "type": "file",
+      "absolute": true,
+      "filename": "/usr/node/logs/monitor.log",
+      "maxLogSize": 20480,
+      "backups": 10,
+      "category": "com.monitor"
+    },
+    {
+        "type": "console",
+        "category": "com.monitor"
+    }
+      
+  ]
+}

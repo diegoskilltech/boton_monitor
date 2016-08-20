@@ -1,0 +1,21 @@
+{
+	"DEV": {
+		"mail": {
+			"domain": "",
+			"key": "",
+			"from": ""
+		},
+		
+		"salt": "La cucaracha, la cucaracha"
+	},
+	
+	"PROD":{
+		"mail": {
+			"domain": "",
+			"key": "",
+			"from": ""
+		},
+		
+		"salt": "La cucaracha, la cucaracha"
+	}
+}

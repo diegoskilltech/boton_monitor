@@ -1,0 +1,42 @@
+﻿//TOP BAR
+.top-bar
+	.container
+		.row
+			//logo
+			.col-md-2.logo
+				a(href="index.html")
+					img(src="http://www.roto-click.com/img/booh.png")
+
+				h1.sr-only Cotizador
+
+			.col-md-10
+				.row
+					.col-md-3
+
+					.col-md-9
+						.top-bar-right
+							//responsive menu bar icon
+							a(href="#").hidden-md.hidden-lg.main-nav-toggle: i.fa.fa-bars
+
+							//logged user and the menu
+							.logged-user
+								.btn-group
+									a.btn.btn-link.dropdown-toggle(data-toggle="dropdown", href="#")
+										img(src="/img/user-avatar.png", alt="User Avatar")
+
+										span.name #{user.email}
+										span.caret 
+									
+									ul.dropdown-menu(role="menu")
+										li
+											a(href="#")
+												i.fa.fa-user  
+												span.text  Perfil
+										li
+											a(href="#")
+												i.fa.fa-cog  
+												span.text  Configuración
+										li
+											a(href="/logout")
+												i.fa.fa-power-off  
+												span.text  Salir

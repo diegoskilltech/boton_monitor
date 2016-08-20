@@ -1,0 +1,408 @@
+extends ../layout-inapp
+
+block content
+	#order
+		//WIDGET WIZARD
+		.widget
+			.widget-header
+				h3
+					i.fa.fa-magic
+					|  Asistente de Pedido
+
+			.widget-content
+				.block-center
+					.wizard-wrapper
+						#order-wizard.wizard
+							ul.steps
+								li(data-target="#step1").active
+									//span.badge.badge-info 1
+									| País
+									span.chevron
+								li(data-target="#step2")
+									//span.badge 2
+									|  Material
+									span.chevron
+								li(data-target="#step3")
+									//span.badge 3
+									|  Perfil
+									span.chevron
+								li(data-target="#step4")
+									//span.badge 4
+									|  Serie
+									span.chevron
+								li(data-target="#step5")
+									//span.badge 5
+									|  Color
+									span.chevron
+								li(data-target="#step6")
+									//span.badge 6
+									|  Tipología
+									span.chevron
+								li(data-target="#step7")
+									//span.badge 7
+									|  Marco
+									span.chevron
+								li(data-target="#step8")
+									//span.badge 8
+									|  Diseño
+									span.chevron
+								li(data-target="#step9")
+									//span.badge 9
+									|  Cremona
+									span.chevron
+								li(data-target="#step10")
+									//span.badge 10
+									|  Mano
+									span.chevron
+								li(data-target="#step11").last
+									//span.badge 11
+									|  Medidas
+
+						.step-content
+							.step-pane.active#step1
+								form(data-parsley-validate, novalidate, data-step="1", data-state='pais')
+									p#title Seleccione país de origen:
+									#container.row
+										.col-md-12.text-muted: i Cargando...
+									p#error
+
+									script(type='text/x-handlebars-template')
+										| {{#each this}}
+										.col-md-3
+											label.fancy-radio
+												input(type="radio", name="pais", value="{{descripcion}}", required, data-parsley-errors-container="[data-state=pais] #error")
+												span(data-pais="{{descripcion}}")
+													i(style="margin-bottom: 8px")
+													span.flag-icon(class="flag-icon-{{codigo}}", style="font-size: 25px")
+													.item-desc {{descripcion}}
+										| {{/each}}
+
+							.step-pane#step2
+								form(data-parsley-validate, novalidate, data-step="2", data-state='material')
+									p Seleccione Material de Fabricación:
+									#container.row
+									p#error
+									script(type='text/x-handlebars-template')
+										| {{#each this}}
+										.col-md-3
+											label.fancy-radio
+												input(type="radio", name="material", value="{{descripcion}}", required data-parsley-errors-container="[data-state=material] #error")
+												span
+													i(style="margin-bottom: 8px")
+													img(src="/img/assets/{{img}}.png")
+													.item-desc {{descripcion}}
+										| {{/each}}
+
+							.step-pane#step3
+								form(data-parsley-validate, novalidate, data-step="3", data-state='perfil')
+									p Seleccione el tipo de perfil:
+									#container.row
+									script(type='text/x-handlebars-template')
+										| {{#each this}}
+										.col-md-3
+											label.fancy-radio
+												input(type="radio", name="perfil", value="{{id}}", required data-parsley-errors-container="[data-state=perfil] #error")
+												span
+													i(style="margin-bottom: 8px")
+													img(src="/img/assets/{{img}}.png")
+													.item-desc {{id}}
+										| {{/each}}
+
+									p#error
+
+							.step-pane#step4
+								form#form_step4(data-parsley-validate, novalidate, data-step="4", data-state='serie')
+									p#title Seleccione serie:
+									#container.row
+									p#error
+									script(type='text/x-handlebars-template')
+										| {{#each this}}
+										.col-md-3
+											label.fancy-radio
+												input(type="radio", name="serie", value="{{this}}", required data-parsley-errors-container="[data-state=serie] #error")
+												span
+													i(style="margin-bottom: 8px")
+													| {{this}}
+										| {{/each}}
+
+							.step-pane#step5
+								form(data-parsley-validate, novalidate, data-step="5", data-state='color')
+									p#title Seleccione color:
+									#container.row
+									p#error
+									script(type='text/x-handlebars-template')
+										| {{#each this}}
+										.col-md-3
+											label.fancy-radio
+												input(type="radio", name="color", value="{{id}}", required data-parsley-errors-container="[data-state=color] #error")
+												span
+													i(style="margin-bottom: 8px")
+													img(src="/img/assets/{{img}}.png")
+													.item-desc {{id}}
+										| {{/each}}
+
+							.step-pane#step6
+								form(data-parsley-validate, novalidate, data-step="6", data-state='tipologia')
+									p#title Seleccione Tipología:
+									#container.row
+									p#error
+									script(type='text/x-handlebars-template')
+										| {{#each this}}
+										.col-md-3
+											label.fancy-radio
+												input(type="radio", name="tipologia", value="{{id}}", required data-parsley-errors-container="[data-state=tipologia] #error")
+												span
+													i(style="margin-bottom: 8px")
+													img(src="/img/assets/{{img}}.png")
+													.item-desc {{id}}
+										| {{/each}}
+
+							.step-pane#step7
+								form(data-parsley-validate, novalidate, data-step="7", data-state='marco')
+									p Seleccione medida de Marco:
+									#marco
+										#container.row
+										p#error
+										script(type='text/x-handlebars-template')
+											| {{#each this}}
+											.col-md-3
+												label.fancy-radio
+													input(type="radio", name="marco", value="{{Codigo}}", required data-parsley-errors-container="[data-state=marco] #marco #error")
+													span
+														i(style="margin-bottom: 8px")
+														| {{Codigo}}
+											| {{/each}}
+									hr
+
+									p Seleccione Medida de hoja:
+									#hoja
+										#container.row(data-container='hoja')
+										p#error
+										script(type='text/x-handlebars-template')
+											| {{#each this}}
+											.col-md-3
+												label.fancy-radio
+													input(type="radio", name="hoja", value="{{Codigo}}", required data-parsley-errors-container="[data-state=marco] #hoja #error")
+													span
+														i(style="margin-bottom: 8px")
+														| {{Codigo}}
+											| {{/each}}
+
+							.step-pane#step8
+								form#form(data-parsley-validate, novalidate, data-step="8", data-state='diseño')
+									p#title Seleccione Diseño:
+									#hojas
+										#container.row
+										p#error
+										script(type='text/x-handlebars-template')
+											| {{#each this}}
+											.col-md-2
+												label.fancy-radio
+													input(type="radio", name="diseño", value="{{value}}", required data-parsley-errors-container="[data-state=diseño] #hojas #error")
+													span
+														i(style="margin-bottom: 8px")
+														| {{descripcion}}
+											| {{/each}}
+									hr
+
+									#combos
+										#container
+										p#error
+										script(type='text/x-handlebars-template')
+											| {{#each hojas}}
+											.row
+												.col-md-12: h3 {{this}}
+												.clearfix
+													.col-md-2
+														label Manija
+														select(name="manija", data-for='{{hoja}}').form-control
+															| {{#each ../manijas}}
+															option(value='{{this}}') {{this}}
+															| {{/each}}
+													.col-md-2
+														label Cremona
+														select(name="cremona", data-for='{{hoja}}').form-control
+															| {{#each ../cremonas}}
+															option(value='{{this}}') {{this}}
+															| {{/each}}
+													.col-md-2
+														label Ruedas
+														select(name="rueda", data-for='{{hoja}}').form-control
+															| {{#each ../ruedas}}
+															option(value='{{this}}') {{this}}
+															| {{/each}}
+											| {{/each}}
+							.step-pane#step9
+								form#form(data-parsley-validate, novalidate, data-step="9", data-state='aguja')
+									p Seleccione Aguja/Cremona:
+									#aguja
+										#container.row
+										p#error
+										script(type='text/x-handlebars-template')
+											| {{#each this}}
+											.col-md-3
+												label.fancy-radio
+													input(type="radio", name="aguja", value="{{agujaMax}}", canal="{{Canal}}", required data-parsley-errors-container="[data-state=aguja] #aguja #error")
+													span
+														i(style="margin-bottom: 8px")
+														| {{agujaMax}}
+											| {{/each}}
+									hr
+
+									p Seleccione Manilla:
+									#manilla
+										#container.row(data-container='manilla')
+										p#error
+										script(type='text/x-handlebars-template')
+											| {{#each this}}
+											.col-md-3
+												label.fancy-radio
+													input(type="radio", name="manilla", value="{{this}}", required data-parsley-errors-container="[data-state=aguja] #manilla #error")
+													span
+														i(style="margin-bottom: 8px")
+														| {{this}}
+											| {{/each}}
+
+							.step-pane#step10
+								form#form(data-parsley-validate, novalidate, data-step="10", data-state='mano')
+									p#title Seleccione Mano:
+									#container.row
+									p#error
+									script(type='text/x-handlebars-template')
+										| {{#each this}}
+										.col-md-3
+											label.fancy-radio
+												input(type="radio", name="mano", value="{{this}}", required, data-parsley-errors-container="[data-state=mano] #error")
+												span
+													i(style="margin-bottom: 8px")
+													| {{this}}
+										| {{/each}}
+
+							.step-pane#step11
+								form#form(data-parsley-validate, novalidate, data-step="11", data-state='medidas')
+									p#title Ingrese medidas:
+									#container.row
+										.col-md-3
+											.form-group
+												label Alto*
+												input(type="number", name="alto", required="true", data-parsley-errors-container="[data-state=medidas] #error").form-control
+
+											.form-group
+												label Ancho*
+												input(type="number", name="ancho", required="true", data-parsley-errors-container="[data-state=medidas] #error").form-control
+									p#error
+
+						.actions(style="margin-left:40%;margin-right: 40%;")
+							button.btn.btn-default.btn-prev#btn-prev
+								i.fa.fa-arrow-left  
+								|  Anterior
+							button.btn.btn-primary.btn-next#btn-next
+								| Siguiente  
+								i.fa.fa-arrow-right
+
+		//END WIDGET WIZARD
+		.widget
+			.widget-header
+				h3
+					i.fa.fa-magic
+					| Pedidos
+			.widget-content
+				.row
+					.col-md-12#grabarPedidoBtnContainer
+						button.btn.btn-sm.btn-success.pull-right(data-action='place-order')
+							i.fa.fa-floppy-o(style="font-size: 17px")
+							|  Grabar Pedido
+
+					.col-md-12#terminarPedidoBtnContainer(style="display: none")
+						button.btn.btn-sm.btn-success.pull-right#bajarPedidoBtn(style="margin-left: 10px;")
+							i.fa.fa-floppy-o(style="font-size: 17px") Bajar Pedido
+						button.btn.btn-sm.btn-success.pull-right#enviarPedidoBtn(style="margin-left: 10px;")
+							i.fa.fa-floppy-o(style="font-size: 17px") Enviar Pedido A Distribuidor
+				.row
+					.col-md-12
+						table#order-table.display(cellspacing="0", width="100%")
+							thead
+								tr
+									th 
+									th Orden Pedido
+									th Nombre
+									th Material
+									th Marca
+									th Perfil
+									th Cantidad
+									th Opc.
+
+	script#quantity-item-template(type='text/x-handlebars-template')
+		input(type='text', style='width:30px;padding: 4px 6px;', data-id='{{id}}', data-orden-pedido="{{cabecera.orden}}", value="{{cabecera.cantidad}}").form-control.input-md
+
+	script#remove-item-template(type='text/x-handlebars-template')
+		button.btn.btn-sm.btn-danger(data-id='{{id}}', data-orden-pedido="{{cabecera.orden}}", data-action="remove-item")
+			i.fa.fa-trash-o
+	script#detail-item-template(type='text/x-handlebars-template')
+		table(cellpadding="5", cellspacing="0", border="0", style="padding-left:50px;")
+			thead
+				th Código Pieza
+				th Descripción
+				th Cantidad
+			tbody
+				| {{#each detalles}}
+				tr
+					td {{pieza}}
+					td {{piezaDescripcion}}
+					td {{cantidad}}
+				| {{/each}}
+
+	script#add-item-form-template(type='text/x-handlebars-template')
+		.row
+			.col-md-12
+				form.form-horizontal
+					.form-group
+						label.col-md-4.control-label(for="nombre") Nombre
+						.col-md-4
+							input#nombre(name="nombre", type="text", placeholder="Nombre pedido...").form-control.input-md
+					.form-group
+						label.col-md-4.control-label(for="cantidad") Cantidad
+						.col-md-4
+							input#cantidad(name="cantidad", type="text", placeholder="000").form-control.input-md
+
+	script#place-order-form-template(type='text/x-handlebars-template')
+		.row
+			.col-md-12
+				form.form-horizontal
+					.form-group
+						label.col-md-4.control-label País
+						.col-md-4
+							.form-control.input-md {{pais}}
+
+					.form-group
+						label.col-md-4.control-label(for="provincia") Provincia
+						.col-md-4
+							select#provincia(name="provincia").form-control.input-md
+								option Seleccioná...
+								| {{#each provincias}}
+								option(value='{{this}}') {{this}}
+								| {{/each}}
+					.form-group
+						.row
+							.col-md-12
+								h4.text-center Distribuidor
+						
+						.row#distribuidor-list
+							.col-md-12.text-center
+								small.text-muted Seleccioná la provincia para obtener distribuidores
+	script#place-order-distributor-template(type='text/x-handlebars-template')
+		| {{#each this}}
+		.col-md-3
+			img(src="{{img}}", _id="{{_id}}", style="max-width: 100%;")
+			.item-desc {{name}}
+		| {{/each}}
+
+block scripts
+	script(src="/js/plugins/bootstrap-tour/bootstrap-tour.custom.js")
+	script(src="/js/king-common.js")
+	script(src="/js/plugins/wizard/wizard.min.js")
+	script(src="/js/plugins/parsley-validation/parsley.min.js")
+	script(src="/js/plugins/parsley-validation/i18n/es.js")
+	script(src="/js/plugins/datatable/jquery.dataTables.min.js")
+	script(src="/js/plugins/datatable/dataTables.bootstrap.js")
+	script(src='/js/require.js', type='text/javascript', data-main='/js/roto/order.main')

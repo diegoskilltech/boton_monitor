@@ -1,0 +1,94 @@
+﻿.col-md-2.left-sidebar#sidebar
+	//main-nav
+	nav.main-nav
+		ul.main-menu
+			li.active
+				a(href="/")
+					i.fa.fa-dashboard.fa-fw
+					span.text Inicio
+			li
+				a(href="/dashboard")
+					i.fa.fa-ticket.fa-fw
+					span.text Iniciar Pedido
+			li
+				a.js-sub-menu-toggle(href="#")
+					i.fa.fa-gear.fa-fw
+					span.text Mi cuenta
+					i.toggle-icon.fa.fa-angle-left
+				ul.sub-menu.open
+					//li
+						a(href="/dashboard/usuarios")
+							span.text Mis Datos
+					li
+						a(href="/dashboard/pedidos")
+							span.text Mis Pedidos
+
+			if user.role == 'ADMIN'
+				li
+					a.js-sub-menu-toggle(href="#")
+						i.fa.fa-gear.fa-fw
+						span.text Administración
+						i.toggle-icon.fa.fa-angle-left
+					ul.sub-menu.open
+						li
+							a(href="/dashboard/usuarios")
+								span.text Usuarios
+						li
+							a(href="/dashboard/paises")
+								span.text Paises
+						li
+							a(href="/dashboard/materiales")
+								span.text Materiales
+						li
+							a(href="/dashboard/distribuidores")
+								span.text Distribuidores
+						//li
+							a(href="/dashboard/perfiles")
+								span.text Perfiles
+						//li
+							a(href="/dashboard/series")
+								span.text Series
+						//li
+							a(href="/dashboard/tipologias")
+								span.text Tipologias
+						//li
+							a(href="/dashboard/productos")
+								span.text Productos
+
+	.sidebar-minified.js-toggle-minified 
+		i.fa.fa-angle-left#menu-toggle-button 
+	
+	//sidebar content
+	.sidebar-content 
+		.panel.panel-default 
+			.panel-heading 
+				h5
+					i.fa.fa-lightbulb-o
+					| Tips
+			
+			.panel-body 
+				p 
+					block tipcontent
+
+		//h5.label.label-default 
+			i.fa.fa-info-circle  
+			|  Server Info
+		//ul.list-unstyled.list-info-sidebar.bottom-30px
+			li.data-row
+				.data-name Disk Space Usage
+				.data-value 
+					| 274.43 / 2 GB
+					.progress.progress-xs 
+						.progress-bar.progress-bar-success(role="progressbar", aria-valuenow="10", aria-valuemin="0", aria-valuemax="100", style="width: 10%")
+							span.sr-only 10%
+			li.data-row
+				.data-name Monthly Bandwidth Transfer
+				.data-value 
+					| 230 / 500 GB
+					.progress.progress-xs 
+						.progress-bar.progress-bar-warning(role="progressbar", aria-valuenow="46", aria-valuemin="0", aria-valuemax="100", style="width: 46%")
+							span.sr-only 46%
+
+			li.data-row
+				span.data-name Database Disk Space
+				span.data-value 219.45 MB
