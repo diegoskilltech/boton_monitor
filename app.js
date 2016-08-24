@@ -57,10 +57,15 @@ app.use(function(err, req, res, next){
 	res.send(500, 'Something broke!');
 });
 
+//Set the application locals
+app.locals = {
+  config: config
+};
+
 /**
  * Routing the application
  */
-app.get('/', routes.index);
+routes(app);
 
 
 //connect(app);

@@ -12,4 +12,5 @@ localConfig.db ={
 	connection: process.env.MONITOR_DB
 };
 
+localConfig.api = process.env.MONITOR_API || 'https://monitor-alerta-portal.herokuapp.com';
 module.exports = localConfig;

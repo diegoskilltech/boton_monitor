@@ -20,7 +20,7 @@ block hero
 	div.container
 		h1 Sistema de Monitoreo de Alertas
 		p Tiene la capacidad de monitorear las 24 horas las cámaras instaladas en 14 parques y plazas porteñas.
-		p: a.btn.btn-primary.btn-xl(role="button", href="#") Ingresar
+		p: a.btn.btn-primary.btn-xl(role="button", data-action="login") Ingresar
 
 block content
 
@@ -57,119 +57,35 @@ block content
 					h3 Más beneficios
 					p Planificando la Ciudad.
 
-	//section.page-auth.page-login.text-center
-		.inner-page
-			.logo
-				a.logo-link(href='/')
-					img(src='//www.roto-click.com/img/booh.png')
 
-			.login-box.center-block 
-				form#login.form-horizontal(data-toggle="validator")
-					p.title Crear cuenta en cotizador
-					input(type="hidden", name="role", value="ARQ")
-					.form-group
-						.col-sm-12
-							input(type="text", name="name", required=true, data-error="Ingresa tu nombre completo", placeholder="Nombre completo").form-control
-							.help-block.with-errors
-					.form-group
-						.col-sm-12
-							input(type="email", name="email", required=true, data-error="Ingresa tu mail", placeholder="Correo electrónico").form-control
-							.help-block.with-errors
-					.form-group
-						.col-sm-12
-							input(type="password", name="password", required=true, data-error="Ingresa una contraseña", placeholder="Contraseña").form-control
-							.help-block.with-errors
-					.form-group
-						.col-sm-12
-							select(name="country").form-control
-								option(value="AR") Argentina
-							.help-block.with-errors
-					.form-group
-						.col-sm-12
-							input(type="text", name="address", required=true, data-error="Ingresa tu dirección", placeholder="Dirección completa").form-control
-							.help-block.with-errors
-					.form-group
-						.col-sm-12
-							input(type="text", name="zipcode", required=true, data-error="Ingresa tu código postal", placeholder="Código Postal").form-control
-							.help-block.with-errors
-					.form-group
-						.col-sm-12
-							input(type="text", name="phone", required=true, data-error="Ingresa tu número de teléfono", placeholder="Teléfono").form-control
-							.help-block.with-errors
+		.modal.fade#login-form(tabindex="-1", role="dialog", aria-labelledby="myModalLabel")
+			.modal-dialog.modal-sm(role="document")
+				.modal-content
+					form(data-toggle="validator")
+						.modal-header
+							button.close(type="button", data-dismiss="modal", aria-label="Close")
+								span(aria-hidden="true") &times;
+							h4.modal-title#myModalLabel Ingresar
 
-					.form-group.bg-danger.error.hidden(requiredError='Debes completar todos los datos', alreadyRegisteredError='Esta dirección de correo electrónico ya se encuentra registrada')
-					button(data-action="submit").btn.btn-custom-primary.btn-lg.btn-block.btn-auth Registrate
-				
-				.links
-					p: a#forgot(href='/login') ¿Ya estás registrado? Ingresá
+						.modal-body
+							.form-horizontal
+								.form-group
+									.col-sm-12
+										input(type="text", name="user", required=true, data-error="Ingresa tu mail", placeholder="Correo electrónico").form-control
+										.help-block.with-errors.text-danger
+								.form-group
+									.col-sm-12
+										input(type="password", name="password", required=true, data-error="Ingresa una contraseña", placeholder="Contraseña").form-control
+										.help-block.with-errors
+						.modal-footer
+							button(data-action="submit").btn.btn-primary Ingresar
+
 block scripts
+	//http://servicios.usig.buenosaires.gob.ar/usig-js/3.1/demos/
+	script(src='/js/require.js', type='text/javascript', data-main='/js/app/auth.main')
+
 	script.
 		(function($){
-			var RegisterFormView = Backbone.View.extend({
-				el: $('#login'),
 
-				events: {
-					'click [data-action=submit]': 'onValidate'
-				},
-
-				//Init method
-				initialize: function() {
-				
-				},
-
-
-				//Do some render...
-				render: function(){
-					var self = this;
-					self.$el.fadeIn();
-					self.$el.on('keypress', function(){
-						self.error.hide();
-					});
-
-					self.$el.validator({
-						errors: {
-							empty: 'El campo es obligatorio',
-							match: 'Does not match',
-							minlength: 'Not long enough'
-						}
-					});
-
-					self.$el.on('submit', _.bind(self.onSubmit, self));
-
-					self.error = self.$el.find('.error');
-				},
-
-				//To validate the form
-				onValidate: function(){
-					console.log(this.$el.validator('validate'));
-				},
-
-				//do the info submit
-				onSubmit: function(e){
-					//Is valid?
-					if (e.isDefaultPrevented()) return;
-					e.preventDefault();
-
-					var self = this;
-					var form = self.$el;
-					var user = _.reduce(form.serialize().split('&'), function(memo, field){
-						var values = field.split('=');
-						memo[values[0]] = unescape(values[1]);
-						return memo;
-					}, {});
-
-					console.log(user);
-					$.post("/signup",{user: user})
-						.done(function( item ) {
-							if(item.code == 200){
-								window.location.href = '/dashboard';
-							}else{
-								form.find('[name=email]').next('.with-errors').text('El mail ingresado ya está registrado');
-							}
-						});
-				}
-			});
-
-			new RegisterFormView().render();
 		})(jQuery);
 
