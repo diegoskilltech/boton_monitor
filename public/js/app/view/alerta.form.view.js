@@ -105,6 +105,11 @@ define([], function(){
 
 			self.interval = setInterval(function(){
 				self.time -= 1000;
+				if(self.time < 2000){
+					self.$el.modal('hide');
+					return;
+				}
+
 				self.$el.find('#block-timer').text(moment(self.time).format('mm:ss'));
 				if(self.time < 2 * 60 * 1000 && self.time > 1 * 60 * 1000) self.$el.find('.shortcut').removeClass('bg-info-dk').addClass('bg-warning-dk');
 				if(self.time < 1 * 60 * 1000) self.$el.find('.shortcut').removeClass('bg-warning-dk').addClass('bg-danger-dk');
