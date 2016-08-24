@@ -23,10 +23,10 @@ define([], function(){
 				zoomBar: false,
 
 				onReady: function() {
-
+					console.log('marker', marker);
 					var point = Projection.pointFromMercator(marker.lon, marker.lat);
 					//http://servicios.usig.buenosaires.gov.ar/symbols/mapabsas/bancos.png
-					var iconUrl = '/img/alert.svg',
+					var iconUrl = ['/img/', marker.tipoAlerta.id,'-alert.svg'].join(''),
 						iconSize = new OpenLayers.Size(41, 41),
 						customMarker = new OpenLayers.Marker(
 							new OpenLayers.LonLat(point.x, point.y),
@@ -99,7 +99,7 @@ define([], function(){
 
 			self.error = self.$el.find('.error');
 
-			MapaAlerta.init({lat: -34.617381, lon: -58.442777});
+			MapaAlerta.init(_.extend({lat: -34.617381, lon: -58.442777}, _.pick(item.cached, 'tipoAlerta') ));
 
 			//MapaAlerta.init({lat: -34.617381, lon: -58.442777});
 

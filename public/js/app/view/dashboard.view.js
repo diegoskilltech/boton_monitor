@@ -77,16 +77,16 @@ define([], function(){
 					miMapa.goTo(new usig.Punto(pt.x, pt.y), true);
 
 					var markers = [
-						{lat: -34.617381, lon: -58.442777, type: 'police', desc: 'Policía'},
-						{lat: -34.616003, lon: -58.446709, type: 'police', desc: 'Policía'},
-						{lat: -34.617540, lon: -58.446575, type: 'police', desc: 'Policía'},
-						{lat: -34.615134, lon: -58.445432, type: 'police', desc: 'Policía'}
+						{lat: -34.617381, lon: -58.442777, tipoAlerta: {id: 1}, desc: 'POLICIA', creationDateFormatted: '21/08 11:00'},
+						{lat: -34.616003, lon: -58.446709, tipoAlerta: {id: 3}, desc: 'EMERGENCIA MEDICA', creationDateFormatted: '21/08 11:00'},
+						{lat: -34.617540, lon: -58.446575, tipoAlerta: {id: 1}, desc: 'POLICIA', creationDateFormatted: '21/08 11:00'},
+						{lat: -34.615134, lon: -58.445432, tipoAlerta: {id: 1}, desc: 'POLICIA', creationDateFormatted: '21/08 11:00'}
 					];
 
 					_.each(markers, function(marker){
 						var point = Projection.pointFromMercator(marker.lon, marker.lat);
 						//http://servicios.usig.buenosaires.gov.ar/symbols/mapabsas/bancos.png
-						var iconUrl = '/img/alert.svg',
+						var iconUrl = ['/img/', marker.tipoAlerta.id,'-alert.svg'].join(''),
 							iconSize = new OpenLayers.Size(41, 41),
 							customMarker = new OpenLayers.Marker(
 								new OpenLayers.LonLat(point.x, point.y),
@@ -95,7 +95,7 @@ define([], function(){
 
 							customMarker.desc = 'Mi marcador';
 
-							miMapa.addMarker(customMarker, false, marker.desc);
+							miMapa.addMarker(customMarker, false, ['<b>', marker.desc, '</b><br><p>', marker.creationDateFormatted,'</p>'].join(''));
 
 					});
 
