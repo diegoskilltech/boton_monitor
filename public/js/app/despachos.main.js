@@ -2,14 +2,16 @@ define(['./model/alertas.model', './view/alertas.view'], function(AlertasModel, 
 	//Return the main container
 	return {
 		model: AlertasModel,
-		template: Handlebars.compile($('#alertas-dashboard-template').html()),
-		$el: null,
+
+		template: Handlebars.compile($('#despachos-dashboard-template').html()),
 
 		render: function(){
-			this.model.predicate = _.iteratee({status: 'Pendiente'});
+			this.model.predicate = function(item){
+				return item.status != 'Pendiente';
+			};
 
-			this.$el = this.template();
-			$('#app-container').empty().append(this.$el);
+			var el = this.template();
+			$('#app-container').empty().append(el);
 
 			new AlertasView({
 				model: this.model,

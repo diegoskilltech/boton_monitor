@@ -1,4 +1,4 @@
-require(['./view/dashboard.view', './alertas.main'], function(DashboardView, AlertasMain){
+require(['./view/dashboard.view', './alertas.main', './despachos.main'], function(DashboardView, AlertasMain, DespachosMain){
 	
 	//Routes definitions
 	var routes = {
@@ -17,7 +17,7 @@ require(['./view/dashboard.view', './alertas.main'], function(DashboardView, Ale
 		},
 
 		forwarded: function() {
-
+			DespachosMain.render();
 		},
 
 		signout: function() {

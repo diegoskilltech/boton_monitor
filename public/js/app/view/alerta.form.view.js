@@ -68,26 +68,24 @@ define([], function(){
 	 * Signin Form View
 	 */
 	return Backbone.View.extend({
-		el: $('#despacho-form'),
 		template: Handlebars.compile($('#despacho-form-template').html()),
 
 		time: 3 * 60 * 1000,
 		interval: null,
-
-		events: {
-			'click [data-action=submit]': 'onValidate'
-		},
+		item: null,
 
 		//Do some render...
 		render: function(item){
 			var self = this;
+			self.item = item;
+			$('body').append(self.$el = $(self.template(item)));
+
 			self.$el.modal();
-			self.$el.find('.modal-body').empty().append(self.template(item));
 			self.$el.on('keypress', function(){
 				self.error.hide();
 			});
 
-			self.$el.validator({
+			self.$el.find('form').validator({
 				errors: {
 					empty: 'El campo es obligatorio',
 					match: 'No coincide',
@@ -96,11 +94,14 @@ define([], function(){
 			});
 
 			self.$el.on('submit', _.bind(self.onSubmit, self));
+			self.$el.on('click', '[data-action=submit]', _.bind(self.onValidate, self));
+			self.$el.on('click', '[data-action=close]', _.bind(self.onValidate, self));
 
 			self.error = self.$el.find('.error');
 
 			MapaAlerta.init(_.extend({lat: -34.617381, lon: -58.442777}, _.pick(item.cached, 'tipoAlerta') ));
 
+			console.log('alerta', item);
 			//MapaAlerta.init({lat: -34.617381, lon: -58.442777});
 
 			self.interval = setInterval(function(){
@@ -115,11 +116,14 @@ define([], function(){
 				if(self.time < 1 * 60 * 1000) self.$el.find('.shortcut').removeClass('bg-warning-dk').addClass('bg-danger-dk');
 			}, 1000);
 
-			self.$el.on('hide.bs.modal', _.bind(window.clearInterval, window, self.interval));
+			self.$el.on('hide.bs.modal', _.bind(self.onDestroy, self));
+
+			self.model.on('saved', _.bind(self.$el.modal, self.$el, 'hide'));
 		},
 
 		//To validate the form
-		onValidate: function(){
+		onValidate: function(e){
+			this.action = $(e.currentTarget).attr('data-action');
 			console.log(this.$el.validator('validate'));
 		},
 
@@ -131,11 +135,35 @@ define([], function(){
 
 			var self = this;
 			var form = self.$el;
-			var user = _.reduce(form.find('input'), function(memo, field){
+			var data = _.reduce(form.find('input, select, textarea'), function(memo, field){
 				field = $(field);
 				memo[field.attr('name')] = unescape(field.val());
 				return memo;
 			}, {});
+
+			var result = {
+				idQueue: self.item.item.queueId, 
+				tipoQueue:"1", 
+				idAlerta: self.item.item.queueId, 
+				observacion: data.observacion,
+				seguimiento: JSON.stringify(_.pick(data, 'tipificacion', 'comentarios'))
+			};
+			
+			console.log(self.action, result);
+			switch(self.action){
+				case "submit":
+					self.model.save(result);
+					break;
+				case "close":
+					self.model.close(result);
+					break;
+			};
+		},
+
+		onDestroy: function(){
+			var self = this;
+			window.clearInterval(self.interval);
+			self.$el.remove();
 		}
 	});
 });

@@ -15,6 +15,10 @@ block content
 
 		#alertas-dashboard .shortcut {padding: 19px;}
 
+		#alertas-dashboard [data-status=Pendiente] {background-color: #d13f34;}
+		#alertas-dashboard [data-status=Despacho] {background-color: #ffd300;}
+		#alertas-dashboard [data-status=Cerrado] {background-color: #4265bc;}
+
 	.container-full.no-padding-top(style="padding: 0 15px;")
 		.row
 			//Navigtion
@@ -70,28 +74,28 @@ block content
 							.bg-blue-dk.shortcut
 								div(data-type='police')
 								div
-									h2 57
+									h2(data-counter='POLICIA') ..
 									p Policia
 
 						.col-md-3
 							.bg-success-dk.shortcut
 								div(data-type='medic')
 								div
-									h2 14
+									h2(data-counter='EMERGENCIA MEDICA') ..
 									p Emergencias
 
 						.col-md-3
 							.bg-violet-dk.shortcut
 								div(data-type='violence')
 								div
-									h2 5
+									h2(data-counter='VIOLENCIA GENERO') ..
 									p Violencia de género
 
 						.col-md-3
 							.bg-danger-dk.shortcut
 								div(data-type='fireman')
 								div
-									h2 9
+									h2(data-counter='BOMBEROS') ..
 									p Bomberos
 				.col-md-2
 					.bg-light-dk.shortcut(data-action='next')
@@ -113,29 +117,36 @@ block content
 
 						tbody#alertas-list
 
+	script#despachos-dashboard-template(type='text/x-handlebars-template')
+		section#alertas-dashboard
+			.row
+				.col-md-6
+					.bg-primary-dk.shortcut
+						div(data-type='despacho')
+						div
+							h2(data-counter='Despacho') ..
+							p Despachadas
 
-						tbody#alertas-static
+				.col-md-6
+					.bg-blue-dk.shortcut
+						div(data-type='cerrada')
+						div
+							h2(data-counter='Cerrado') ..
+							p Cerradas
+			br
+			.row
+				.col-md-12.table-responsive
+					table.table.table-striped
+						thead
 							tr
-								td 3
-								td: span.label.bg-police-dk POLICIA
-								td 21/08 11:00
-								td Verónica Rombolá
-								td
-								td.text-right: span.label.label-danger Pendiente
-							tr
-								td 2
-								td: span.label.bg-police-dk POLICIA
-								td 21/08 10:22
-								td Pedro Luna
-								td
-								td.text-right: span.label.label-danger Pendiente
-							tr
-								td 1
-								td: span.label.bg-police-dk POLICIA
-								td 21/08 10:03
-								td Javier Mendoza
-								td
-								td.text-right: span.label.label-danger Pendiente
+								th #
+								th Tipo
+								th Evento
+								th Usuario
+								th Ubicación
+								th.text-right Estado
+
+						tbody#alertas-list
 
 	script#alertas-item-template(type='text/x-handlebars-template')
 		| {{#each this}}
@@ -145,85 +156,84 @@ block content
 			td {{creationDateFormatted}}
 			td {{user.name}}
 			td {{user.address}}
-			td.text-right: span.label.label-danger {{status}}
+			td.text-right: span.label(data-status='{{status}}') {{status}}
 		| {{/each}}
 
-	.modal#despacho-form(tabindex="-1", role="dialog", aria-labelledby="modal-title")
-		.modal-dialog(role="document", style="width: 90%")
-			.modal-content
-				form(data-toggle="validator")
-					.modal-header
-						button.close(type="button", data-dismiss="modal", aria-label="Close")
-							span(aria-hidden="true") &times;
-						h4.modal-title#modal-title Despacho de Alerta
-
-					.modal-body
-
-					.modal-footer
-						.row
-							.col-md-4
-								button(data-action="close").btn.btn-lg.btn-block Cierre directo
-							.col-md-8
-								button(data-action="submit").btn.btn-primary.btn-lg.btn-block Despachar
-
 	script#despacho-form-template(type='text/x-handlebars-template')
-		.row
-			.col-md-4
-				.form-group
-					.form-control(disabled='true') Fecha alerta: {{cached.creationDateFormatted}} - ID: {{cached.id}}
-				.form-group
-					.form-control(disabled='true') Nombre: {{cached.user.name}} ({{cached.user.age}} - {{cached.user.gender}})
-				.form-group
-					.form-control(disabled='true') Dirección: {{cached.user.address}}
-				.form-group
-					.form-control(disabled='true') Teléfonos: {{cached.user.tel}} / {{cached.user.cel}}
-				.well#map-location(style='height: 300px;')
-			.col-md-4
-				.form-group
-					.bg-info-dk.shortcut
-						h1#block-timer(style="margin: 13px auto;") 03:00
-				.form-group
-					.form-control(disabled='true') {{cached.tipoAlerta.descripcion}}
+		.modal#despacho-form(tabindex="-1", role="dialog", aria-labelledby="modal-title")
+			.modal-dialog(role="document", style="width: 90%")
+				.modal-content
+					form(data-toggle="validator")
+						.modal-header
+							button.close(type="button", data-dismiss="modal", aria-label="Close")
+								span(aria-hidden="true") &times;
+							h4.modal-title#modal-title Despacho de Alerta
 
-				.form-group
-					select(name="tipo", required=true, data-error="Seleccione tipo", placeholder="Tipificación").form-control
-						option Seleccionar tipificación
-						option Robo a Mano Armada
-						option Usurpación de Hogar
-						option Secuestro
+						.modal-body
+							.row
+								.col-md-4
+									.form-group
+										.form-control(disabled='true') Fecha alerta: {{cached.creationDateFormatted}} - ID: {{cached.id}}
+									.form-group
+										.form-control(disabled='true') Nombre: {{cached.user.name}} ({{cached.user.age}} - {{cached.user.gender}})
+									.form-group
+										.form-control(disabled='true') Dirección: {{cached.user.address}}
+									.form-group
+										.form-control(disabled='true') Teléfonos: {{cached.user.tel}} / {{cached.user.cel}}
+									.well#map-location(style='height: 300px;')
+								.col-md-4
+									.form-group
+										.bg-info-dk.shortcut
+											h1#block-timer(style="margin: 13px auto;") 03:00
+									.form-group
+										.form-control(disabled='true') {{cached.tipoAlerta.descripcion}}
 
-					.help-block.with-errors
+									.form-group
+										select(name="tipificacion", required=true, data-error="Seleccione tipo", placeholder="Tipificación").form-control
+											option Robo a Mano Armada
+											option Usurpación de Hogar
+											option Secuestro
 
-				.form-group
-					textarea.form-control(placeholder='Descripción de Hechos...', style='height: 250px; resize:vertical;')
-			.col-md-4
-				.panel-group#accordion
-					.panel.panel-default
-						.panel-heading
-							h4.panel-title
-								a(data-toggle="collapse", data-parent="#accordion", href="#collapse-preguntas")
-									| Preguntas
-						div#collapse-preguntas.panel-collapse.collapse.in
-							.panel-body
-								| No hay preguntas definidas
+										.help-block.with-errors
 
-					.panel.panel-default
-						.panel-heading
-							h4.panel-title
-								a(data-toggle="collapse", data-parent="#accordion", href="#collapse-protocolo")
-									| Protocolo
-						div#collapse-protocolo.panel-collapse.collapse.in
-							.panel-body
-								| No hay protocolo definido
+									.form-group
+										textarea.form-control(name="observacion", placeholder='Descripción de Hechos...', required=true, data-error="El campo es obligatorio", style='height: 250px; resize:vertical;')
+										.help-block.with-errors
 
-					.panel.panel-default
-						.panel-heading
-							h4.panel-title
-								a(data-toggle="collapse", data-parent="#accordion", href="#collapse-comentarios")
-									| Comentarios
-						div#collapse-comentarios.panel-collapse.collapse.in
-							.panel-body
-								textarea(name="comentarios", style="min-height: 100px; resize: vertical;", placeholder="Comentarios...").form-control
+								.col-md-4
+									.panel-group#accordion
+										.panel.panel-default
+											.panel-heading
+												h4.panel-title
+													a(data-toggle="collapse", data-parent="#accordion", href="#collapse-preguntas")
+														| Preguntas
+											div#collapse-preguntas.panel-collapse.collapse.in
+												.panel-body
+													| No hay preguntas definidas
+
+										.panel.panel-default
+											.panel-heading
+												h4.panel-title
+													a(data-toggle="collapse", data-parent="#accordion", href="#collapse-protocolo")
+														| Protocolo
+											div#collapse-protocolo.panel-collapse.collapse.in
+												.panel-body
+													| No hay protocolo definido
+
+										.panel.panel-default
+											.panel-heading
+												h4.panel-title
+													a(data-toggle="collapse", data-parent="#accordion", href="#collapse-comentarios")
+														| Comentarios
+											div#collapse-comentarios.panel-collapse.collapse.in
+												.panel-body
+													textarea(name="comentarios", style="min-height: 100px; resize: vertical;", placeholder="Comentarios...").form-control
+						.modal-footer
+							.row
+								.col-md-4
+									button(data-action="close").btn.btn-lg.btn-block Cierre directo
+								.col-md-8
+									button(data-action="submit").btn.btn-primary.btn-lg.btn-block Despachar
 block scripts
 	script(src='http://servicios.usig.buenosaires.gob.ar/usig-js/3.1/usig.AutoCompleterFull.min.js', type='text/javascript')
 	script(src='http://servicios.usig.buenosaires.gob.ar/usig-js/3.1/usig.MapaInteractivo.min.js', type='text/javascript')

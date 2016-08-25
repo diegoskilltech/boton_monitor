@@ -1,4 +1,11 @@
 define([], function(){
+	//$.post('https://monitor-alerta-portal.herokuapp.com/api/v1/alertas/Cerrar/', {idQueue:175, tipoQueue:"1", idAlerta:175, observacion: 'check'})
+	//$.post('https://monitor-alerta-portal.herokuapp.com/api/v1/alertas/grabar/', {idQueue:172, tipoQueue:"1", idAlerta:172, observacion: 'check'})
+
+	var UsersMock = {
+
+	};
+
 	//Alertas Model Class
 	var Model = {
 		typeCssMap: {
@@ -11,13 +18,14 @@ define([], function(){
 		api: Config.api,
 
 		cache: [],
+		predicate: null,
 
 		list: function(){
 			var self = this;
 			$.get([this.api, '/api/v1/alertas/alertas_grid/1'].join(''))
 			.done(function(items){
-				self.cache = items = self.parse(items);
-
+				items = self.parse(items);
+				self.cache = items = self.predicate ? _.filter(items, self.predicate) : items;
 				self.trigger('list', items);
 			});
 
@@ -26,7 +34,7 @@ define([], function(){
 
 		next: function(){
 			var self = this;
-			$.get([this.api, '/api/v1/alertas/getNextAlerta/1/1/1'].join(''))
+			$.get([this.api, '/api/v1/alertas/getNextAlerta/1/0/1'].join(''))
 			.done(function(item){
 				var cached = self.get(item.alerta.id);
 				self.trigger('next', {item: item, cached: cached});
@@ -37,6 +45,36 @@ define([], function(){
 
 		get: function(id){
 			return _.findWhere(this.cache, {id: id});
+		},
+
+		save: function(data){
+			var self = this;
+			$.post([this.api, '/api/v1/alertas/grabar/'].join(''), data)
+			.done(function(result){
+				if(result.code == '200'){
+					var cached = self.get(data.id);
+					self.trigger('saved');
+				}else{
+					self.trigger('error', result);
+				}
+			});
+
+			return this;
+		},
+
+		close: function(data){
+			var self = this;
+			$.post([this.api, '/api/v1/alertas/Cerrar/'].join(''), data)
+			.done(function(result){
+				if(result.code == '200'){
+					var cached = self.get(data.id);
+					self.trigger('saved');
+				}else{
+					self.trigger('error', result);
+				}
+			});
+
+			return this;
 		},
 
 		//To parse the items to a better format
