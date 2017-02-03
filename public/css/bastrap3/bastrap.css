@@ -397,26 +397,26 @@ input[type=checkbox]:focus {
 .btn-primary.disabled,
 .btn-primary[disabled],
 .btn-primary:visited {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffd300), to(#ffbc00));
-  background-image: -webkit-linear-gradient(top, #ffd300 0%, #ffbc00 100%);
-  background-image: linear-gradient(to bottom, #ffd300 0%, #ffbc00 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd300', endColorstr='#ffbc00',GradientType=0 ); /* IE6-9 */
-  background-color: #ffbc00;
-  border-color: #d7a721;
-  color: #5f4600;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#4CAF50), to(#388E3C));
+  background-image: -webkit-linear-gradient(top, #4CAF50 0%, #388E3C 100%);
+  background-image: linear-gradient(to bottom, #4CAF50 0%, #388E3C 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4CAF50', endColorstr='#388E3C',GradientType=0 ); /* IE6-9 */
+  background-color: #388E3C;
+  border-color: #388E3C;
+  color: #E8F5E9;
 }
 
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-gcba:hover,
 .btn-gcba:focus {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffdc33), to(#ffc933));
-  background-image: -webkit-linear-gradient(top, #ffdc33 0%, #ffc933 100%);
-  background-image: linear-gradient(to bottom, #ffdc33 0%, #ffc933 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffdc33', endColorstr='#ffc933',GradientType=0 ); /* IE6-9 */
-  background-color: #ffc933;
-  border-color: #dfb94d;
-  color: #735500;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#388E3C), to(#2E7D32));
+  background-image: -webkit-linear-gradient(top, #388E3C 0%, #2E7D32 100%);
+  background-image: linear-gradient(to bottom, #388E3C 0%, #2E7D32 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#388E3C', endColorstr='#2E7D32',GradientType=0 ); /* IE6-9 */
+  background-color: #2E7D32;
+  border-color: #2E7D32;
+  color: #E8F5E9;
 }
 
 .btn-primary:active,
@@ -1384,15 +1384,11 @@ a.list-group-item.active > .badge {
 .bac-header {
   width: 170px;
   height: 30px;
-  background-image: url(bac-header.png);
-  background-image: url(bac-header.svg), none;
 }
 
 .bac-footer {
   width: 255px;
   height: 45px;
-  background-image: url(bac-footer.png);
-  background-image: url(bac-footer.svg), none;
 }
 
 .ba-btn {
